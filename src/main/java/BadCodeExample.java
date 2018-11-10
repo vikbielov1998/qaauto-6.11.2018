@@ -20,5 +20,22 @@ public class BadCodeExample {
 
         List<WebElement> resultsList = webDriver.findElements(By.xpath("//div[@class='srg']/div[@class='g']"));
         System.out.println(resultsList.size());
+
+        int i = 0;
+        String[] selenium = new String[resultsList.size()];
+       for (WebElement text: resultsList)
+       {
+           selenium[i] = text.getText();
+           System.out.println(selenium[i]);
+           if (selenium[i].contains("Selenium"))
+           {
+               System.out.println("Search term found");
+           }
+           else
+           {
+               System.out.println("Search term not found");
+           }
+           i++;
+       }
     }
 }
