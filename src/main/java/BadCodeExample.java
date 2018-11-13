@@ -13,27 +13,26 @@ public class BadCodeExample {
 
         WebDriver webDriver = new ChromeDriver();
         webDriver.get("https://www.google.com");
+        String searchTerm = "selenium";
 
         WebElement searchField = webDriver.findElement(By.id("lst-ib"));
-        searchField.sendKeys("Selenium");
+        searchField.sendKeys(searchTerm);
         searchField.sendKeys(Keys.ENTER);
 
         List<WebElement> resultsList = webDriver.findElements(By.xpath("//div[@class='srg']/div[@class='g']"));
         System.out.println(resultsList.size());
 
-        String selenium;
-       for (WebElement text: resultsList)
-       {
-           selenium = text.getText();
-           System.out.println(selenium);
-           if (selenium.contains("Selenium"))
-           {
-               System.out.println("Search term found");
-           }
-           else
-           {
-               System.out.println("Search term not found");
-           }
-       }
+        //for each WebElement 'result' in list of WebElements 'resultsList' print Text
+        String resultText;
+        for (WebElement result : resultsList) {
+            resultText = result.getText();
+            System.out.println(resultText);
+            if (resultText.toLowerCase().contains(searchTerm)) {
+                System.out.println("Search term found");
+            } else {
+                System.out.println("Search term not found");
+            }
+        }
+        webDriver.quit();
     }
 }
