@@ -21,13 +21,12 @@ public class BadCodeExample {
         List<WebElement> resultsList = webDriver.findElements(By.xpath("//div[@class='srg']/div[@class='g']"));
         System.out.println(resultsList.size());
 
-        int i = 0;
-        String[] selenium = new String[resultsList.size()];
+        String selenium;
        for (WebElement text: resultsList)
        {
-           selenium[i] = text.getText();
-           System.out.println(selenium[i]);
-           if (selenium[i].contains("Selenium"))
+           selenium = text.getText();
+           System.out.println(selenium);
+           if (selenium.contains("Selenium"))
            {
                System.out.println("Search term found");
            }
@@ -35,7 +34,6 @@ public class BadCodeExample {
            {
                System.out.println("Search term not found");
            }
-           i++;
        }
     }
 }
