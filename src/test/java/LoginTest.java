@@ -3,41 +3,39 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class LoginTest {
+    WebDriver webDriver;
+
+    @BeforeMethod
+    public void beforeMethod(){
+        webDriver = new ChromeDriver();
+        webDriver.get("https://www.linkedin.com");
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        webDriver.quit();
+    }
 
     @Test
     public void negativeLoginTest() {
-        WebDriver webDriver = new ChromeDriver();
-        webDriver.get("https://www.linkedin.com");
 
-        WebElement emailField = webDriver.findElement(By.xpath("//*[@id='login-email']"));
-        WebElement passwordField = webDriver.findElement(By.xpath("//*[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//*[@id='login-submit']"));
-
-        emailField.sendKeys("a@b.c");
-        passwordField.sendKeys("");
-        signInButton.click();
-
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("a@b.c", "");
         //Verify that page Title is "LinkedIn: Log In or Sign Up"
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Войти или зарегистрироваться");
+        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Войти или зарегистрироваться", "Login page title is wrong");
     }
 
 
     @Test
     public void positiveLoginTest() {
-        WebDriver webDriver = new ChromeDriver();
-        webDriver.get("https://www.linkedin.com");
-
-        WebElement emailField = webDriver.findElement(By.xpath("//*[@id='login-email']"));
-        WebElement passwordField = webDriver.findElement(By.xpath("//*[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//*[@id='login-submit']"));
-
-        emailField.sendKeys("testvikbielov@gmail.com");
-        passwordField.sendKeys("112233qweqwedbrnjh");
-        signInButton.click();
-
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn");
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
+        String name = webDriver.findElement(By.xpath("//span[@class='t-16 t-black t-bold']")).getText();
+        Assert.assertEquals(name, "Viktor Bielov");
     }
 }
