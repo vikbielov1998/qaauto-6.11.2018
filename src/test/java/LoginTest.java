@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 public class LoginTest {
 
     @Test
-    public void negativeLoginTest(){
+    public void negativeLoginTest() {
         WebDriver webDriver = new ChromeDriver();
         webDriver.get("https://www.linkedin.com");
 
@@ -21,6 +21,23 @@ public class LoginTest {
         signInButton.click();
 
         //Verify that page Title is "LinkedIn: Log In or Sign Up"
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up");
+        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Войти или зарегистрироваться");
+    }
+
+
+    @Test
+    public void positiveLoginTest() {
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.get("https://www.linkedin.com");
+
+        WebElement emailField = webDriver.findElement(By.xpath("//*[@id='login-email']"));
+        WebElement passwordField = webDriver.findElement(By.xpath("//*[@id='login-password']"));
+        WebElement signInButton = webDriver.findElement(By.xpath("//*[@id='login-submit']"));
+
+        emailField.sendKeys("testvikbielov@gmail.com");
+        passwordField.sendKeys("112233qweqwedbrnjh");
+        signInButton.click();
+
+        Assert.assertEquals(webDriver.getTitle(), "LinkedIn");
     }
 }
