@@ -43,8 +43,9 @@ public class LoginTest {
     public void positiveLoginTest() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
+        String name = webDriver.findElement(By.xpath("//span[@class='t-16 t-black t-bold']")).getText();
 
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn");
+        Assert.assertEquals(name, "Welcome, Viktor!");
     }
 
     @Test
