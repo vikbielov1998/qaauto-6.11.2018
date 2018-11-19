@@ -22,20 +22,36 @@ public class LoginTest {
     }
 
     @Test
-    public void negativeLoginTest() {
-
+    public void wrongPassword() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("a@b.c", "");
-        //Verify that page Title is "LinkedIn: Log In or Sign Up"
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Войти или зарегистрироваться", "Login page title is wrong");
+        loginPage.login("testvikbielov@gmail.com", "pa$$word");
+        String passError = webDriver.findElement(By.id("error-for-password")).getText();
+
+        Assert.assertEquals(passError, "Это неверный пароль. Повторите попытку или измените пароль.");
     }
 
+    @Test
+    public void emailWithoutDot() {
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("testvikbielov@gmailcom", "112233qweqwedbrnjh");
+        String emailError = webDriver.findElement(By.id("error-for-username")).getText();
+
+        Assert.assertEquals(emailError, "Этот адрес эл. почты не зарегистрирован в LinkedIn.\nВозможно, вы имели в виду @gmail.com?");
+    }
 
     @Test
     public void positiveLoginTest() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
-        String name = webDriver.findElement(By.xpath("//span[@class='t-16 t-black t-bold']")).getText();
-        Assert.assertEquals(name, "Viktor Bielov");
+
+        Assert.assertEquals(webDriver.getTitle(), "LinkedIn");
+    }
+
+    @Test
+    public void everythingElse() {
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("", "");
+
+        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Войти или зарегистрироваться");
     }
 }
