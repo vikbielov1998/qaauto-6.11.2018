@@ -8,7 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class LoginTest {
-    WebDriver webDriver;
+    private WebDriver webDriver;
 
     @BeforeMethod
     public void beforeMethod(){
@@ -25,6 +25,7 @@ public class LoginTest {
     public void wrongPassword() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("testvikbielov@gmail.com", "pa$$word");
+
         String passError = webDriver.findElement(By.id("error-for-password")).getText();
 
         Assert.assertEquals(passError, "Это неверный пароль. Повторите попытку или измените пароль.");
@@ -34,25 +35,63 @@ public class LoginTest {
     public void emailWithoutDot() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("testvikbielov@gmailcom", "112233qweqwedbrnjh");
+
         String emailError = webDriver.findElement(By.id("error-for-username")).getText();
 
         Assert.assertEquals(emailError, "Этот адрес эл. почты не зарегистрирован в LinkedIn.\nВозможно, вы имели в виду @gmail.com?");
     }
 
     @Test
-    public void positiveLoginTest() {
+    public void emailWithoutCom() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
-        String name = webDriver.findElement(By.xpath("//span[@class='t-16 t-black t-bold']")).getText();
+        loginPage.login("testvikbielov@gmail.", "112233qweqwedbrnjh");
 
-        Assert.assertEquals(name, "Welcome, Viktor!");
+        String emailError = webDriver.findElement(By.id("error-for-username")).getText();
+
+        Assert.assertEquals(emailError, "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.");
     }
 
     @Test
-    public void everythingElse() {
+    public void invalidEmail() {
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("testvikbielov", "112233qweqwedbrnjh");
+
+        String emailError = webDriver.findElement(By.id("error-for-username")).getText();
+
+        Assert.assertEquals(emailError, "Укажите действительный адрес эл. почты.");
+    }
+
+    @Test
+    public void positiveLoginTest() {
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
+
+        HomePage homePage = new HomePage(webDriver);
+
+        Assert.assertTrue(webDriver.getTitle().contains("LinkedIn"), "Home page title is wrong");
+        Assert.assertTrue(homePage.welcomeMessage.isDisplayed(), "Welcome message is not displayed");
+    }
+
+    @Test
+    public void emptyFied() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("", "");
 
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Войти или зарегистрироваться");
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded.");
+    }
+
+    @Test
+    public void negativeLeadsToLoginSubmitPage(){
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("testvikbielov@@gmail.com", "112233qweqwedbrnjh");
+
+        WebElement loginForm = webDriver.findElement(By.xpath("//form[@class='login__form']"));
+        Assert.assertTrue(loginForm.isDisplayed(), "Login Submit page is not loaded");
+
+        WebElement userEmailError = webDriver.findElement(By.id("error-for-username"));
+        Assert.assertEquals(userEmailError.getText(), "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.", "userEmail validation message is wrong");
+
+        WebElement userPassError = webDriver.findElement(By.id("error-for-password"));
+        Assert.assertEquals(userPassError.getText(), "", "userPass validation message is wrong");
     }
 }
