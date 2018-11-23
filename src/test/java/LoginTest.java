@@ -62,9 +62,7 @@ public class LoginTest {
     @Test
     public void positiveLoginTest() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
-
-        HomePage homePage = new HomePage(webDriver);
+        HomePage homePage = loginPage.loginToHome("testvikbielov@gmail.com", "112233qweqwedbrnjh");
 
         Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded");
     }
@@ -80,9 +78,8 @@ public class LoginTest {
     @Test
     public void negativeLeadsToLoginSubmitPage(){
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("testvikbielov@@gmail.com", "112233qweqwedbrnjh");
+        LoginSubmitPage loginSubmitPage = loginPage.loginToLoginSubmit("testvikbielov@@gmail.com", "112233qweqwedbrnjh");
 
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 }

@@ -1,33 +1,48 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+class LoginPage {
 
     private WebDriver webDriver;
 
+    @FindBy(xpath = "//*[@id='login-email']")
     private WebElement emailField;
+
+    @FindBy(xpath = "//*[@id='login-password']")
     private WebElement passwordField;
+
+    @FindBy(xpath = "//*[@id='login-submit']")
     private WebElement signInButton;
 
-    public LoginPage(WebDriver webDriver) {
+    LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        initElements();
+        PageFactory.initElements(webDriver, this);
     }
 
-    private void initElements() {
-        emailField = webDriver.findElement(By.xpath("//*[@id='login-email']"));
-        passwordField = webDriver.findElement(By.xpath("//*[@id='login-password']"));
-        signInButton = webDriver.findElement(By.xpath("//*[@id='login-submit']"));
-    }
-
-    public void login(String userEmail, String userPassword) {
+    LoginSubmitPage loginToLoginSubmit(String userEmail, String userPassword) {
         emailField.sendKeys(userEmail);
         passwordField.sendKeys(userPassword);
         signInButton.click();
+        return new LoginSubmitPage(webDriver);
     }
 
-    public boolean isPageLoaded() {
+    HomePage loginToHome(String userEmail, String userPassword) {
+        emailField.sendKeys(userEmail);
+        passwordField.sendKeys(userPassword);
+        signInButton.click();
+        return new HomePage(webDriver);
+    }
+
+    public LoginPage login(String userEmail, String userPassword){
+        emailField.sendKeys(userEmail);
+        passwordField.sendKeys(userPassword);
+        signInButton.click();
+        return new LoginPage(webDriver);
+    }
+
+    boolean isPageLoaded() {
 
         return signInButton.isDisplayed() && webDriver.getTitle().equals("LinkedIn: Войти или зарегистрироваться") && webDriver.getCurrentUrl().equals("https://www.linkedin.com/");
     }
