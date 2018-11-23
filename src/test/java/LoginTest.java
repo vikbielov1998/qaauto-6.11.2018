@@ -1,6 +1,4 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -21,7 +19,7 @@ public class LoginTest {
         webDriver.quit();
     }
 
-    @Test
+    /*@Test
     public void wrongPassword() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("testvikbielov@gmail.com", "pa$$word");
@@ -59,7 +57,7 @@ public class LoginTest {
         String emailError = webDriver.findElement(By.id("error-for-username")).getText();
 
         Assert.assertEquals(emailError, "Укажите действительный адрес эл. почты.");
-    }
+    }*/
 
     @Test
     public void positiveLoginTest() {
@@ -68,8 +66,7 @@ public class LoginTest {
 
         HomePage homePage = new HomePage(webDriver);
 
-        Assert.assertTrue(webDriver.getTitle().contains("LinkedIn"), "Home page title is wrong");
-        Assert.assertTrue(homePage.welcomeMessage.isDisplayed(), "Welcome message is not displayed");
+        Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded");
     }
 
     @Test
@@ -85,13 +82,7 @@ public class LoginTest {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("testvikbielov@@gmail.com", "112233qweqwedbrnjh");
 
-        WebElement loginForm = webDriver.findElement(By.xpath("//form[@class='login__form']"));
-        Assert.assertTrue(loginForm.isDisplayed(), "Login Submit page is not loaded");
-
-        WebElement userEmailError = webDriver.findElement(By.id("error-for-username"));
-        Assert.assertEquals(userEmailError.getText(), "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.", "userEmail validation message is wrong");
-
-        WebElement userPassError = webDriver.findElement(By.id("error-for-password"));
-        Assert.assertEquals(userPassError.getText(), "", "userPass validation message is wrong");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 }
