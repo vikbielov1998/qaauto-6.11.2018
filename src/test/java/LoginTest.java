@@ -3,6 +3,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTest {
@@ -58,27 +59,35 @@ public class LoginTest {
 
         Assert.assertEquals(emailError, "Укажите действительный адрес эл. почты.");
     }*/
+    @DataProvider
+    public Object[][] validDataProvider() {
+        return new Object[][]{
+                {"testvikbielov@gmail.com", "112233qweqwedbrnjh"},
+                {"testvikbielov@GMAIL.COM", "112233qweqwedbrnjh"},
+                {" testvikbielov@gmail.com ", "112233qweqwedbrnjh"}
+        };
+    }
 
-    @Test
-    public void positiveLoginTest() {
+    @Test (dataProvider = "validDataProvider")
+    public void positiveLoginTest(String userEmail, String userPass) {
         LoginPage loginPage = new LoginPage(webDriver);
-        HomePage homePage = loginPage.loginToHome("testvikbielov@gmail.com", "112233qweqwedbrnjh");
+        HomePage homePage = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded");
     }
 
     @Test
-    public void emptyFied() {
+    public void emptyField() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("", "");
+        LoginPage loginPage1 = loginPage.login("", "");
 
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded.");
+        Assert.assertTrue(loginPage1.isPageLoaded(), "Login page is not loaded.");
     }
 
     @Test
     public void negativeLeadsToLoginSubmitPage(){
         LoginPage loginPage = new LoginPage(webDriver);
-        LoginSubmitPage loginSubmitPage = loginPage.loginToLoginSubmit("testvikbielov@@gmail.com", "112233qweqwedbrnjh");
+        LoginSubmitPage loginSubmitPage = loginPage.login("testvikbielov@@gmail.com", "112233qweqwedbrnjh");
 
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }

@@ -1,28 +1,29 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-class LoginSubmitPage {
-    private WebDriver webDriver;
+class LoginSubmitPage extends BasePage{
 
+    @FindBy (xpath = "//form[@class='login__form']")
     private WebElement loginForm;
+
+    @FindBy (id = "error-for-username")
     private WebElement userEmailError;
+
+    @FindBy (id = "error-for-password")
     private WebElement userPassError;
+
+    @FindBy (xpath = "//button[@class='btn__primary--large from__button--floating']")
     private WebElement signInButton;
 
     LoginSubmitPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        initElements();
-    }
-
-    private void initElements(){
-        loginForm = webDriver.findElement(By.xpath("//form[@class='login__form']"));
-        userEmailError = webDriver.findElement(By.id("error-for-username"));
-        userPassError = webDriver.findElement(By.id("error-for-password"));
-        signInButton = webDriver.findElement(By.xpath("//button[@class='btn__primary--large from__button--floating']"));
+        PageFactory.initElements(webDriver, this);
     }
 
     boolean isPageLoaded(){
+
         return loginForm.isDisplayed() && signInButton.isDisplayed() && (userEmailError.isDisplayed() || userPassError.isDisplayed()) && webDriver.getCurrentUrl().contains("uas/login-submit");
     }
 }
