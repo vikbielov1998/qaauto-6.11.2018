@@ -1,7 +1,7 @@
 import org.openqa.selenium.WebDriver;
 
-public class BasePage {
+abstract class  BasePage {
     protected WebDriver webDriver;
 
-    //abstract boolean isPageLoaded();
+    abstract boolean isPageLoaded();
 }

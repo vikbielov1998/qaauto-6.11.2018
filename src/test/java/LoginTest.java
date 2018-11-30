@@ -9,10 +9,13 @@ import org.testng.annotations.Test;
 public class LoginTest {
     private WebDriver webDriver;
 
+    private LoginPage loginPage;
+
     @BeforeMethod
-    public void beforeMethod(){
+    public void beforeMethod() {
         webDriver = new ChromeDriver();
         webDriver.get("https://www.linkedin.com");
+        loginPage = new LoginPage(webDriver);
     }
 
     @AfterMethod
@@ -20,45 +23,6 @@ public class LoginTest {
         webDriver.quit();
     }
 
-    /*@Test
-    public void wrongPassword() {
-        LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("testvikbielov@gmail.com", "pa$$word");
-
-        String passError = webDriver.findElement(By.id("error-for-password")).getText();
-
-        Assert.assertEquals(passError, "Это неверный пароль. Повторите попытку или измените пароль.");
-    }
-
-    @Test
-    public void emailWithoutDot() {
-        LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("testvikbielov@gmailcom", "112233qweqwedbrnjh");
-
-        String emailError = webDriver.findElement(By.id("error-for-username")).getText();
-
-        Assert.assertEquals(emailError, "Этот адрес эл. почты не зарегистрирован в LinkedIn.\nВозможно, вы имели в виду @gmail.com?");
-    }
-
-    @Test
-    public void emailWithoutCom() {
-        LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("testvikbielov@gmail.", "112233qweqwedbrnjh");
-
-        String emailError = webDriver.findElement(By.id("error-for-username")).getText();
-
-        Assert.assertEquals(emailError, "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.");
-    }
-
-    @Test
-    public void invalidEmail() {
-        LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("testvikbielov", "112233qweqwedbrnjh");
-
-        String emailError = webDriver.findElement(By.id("error-for-username")).getText();
-
-        Assert.assertEquals(emailError, "Укажите действительный адрес эл. почты.");
-    }*/
     @DataProvider
     public Object[][] validDataProvider() {
         return new Object[][]{
@@ -68,9 +32,8 @@ public class LoginTest {
         };
     }
 
-    @Test (dataProvider = "validDataProvider")
+    @Test(dataProvider = "validDataProvider")
     public void positiveLoginTest(String userEmail, String userPass) {
-        LoginPage loginPage = new LoginPage(webDriver);
         HomePage homePage = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded");
@@ -78,7 +41,7 @@ public class LoginTest {
 
 
     @DataProvider
-    public Object[][] emptyDataProvider(){
+    public Object[][] emptyDataProvider() {
         return new Object[][]{
                 {"testvikbielov@gmail.com", ""},
                 {"", "112233qweqwedbrnjh"},
@@ -86,9 +49,8 @@ public class LoginTest {
         };
     }
 
-    @Test (dataProvider = "emptyDataProvider")
-    public void emptyField( String userEmail, String userPass ) {
-        LoginPage loginPage = new LoginPage(webDriver);
+    @Test(dataProvider = "emptyDataProvider")
+    public void emptyField(String userEmail, String userPass) {
         LoginPage loginPage1 = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(loginPage1.isPageLoaded(), "Login page is not loaded.");
@@ -103,9 +65,8 @@ public class LoginTest {
         };
     }
 
-    @Test (dataProvider = "invalidDataProvider")
-    public void negativeLeadsToLoginSubmitPage( String userEmail, String userPass, String emailErrorMessage, String passErrorMessage ){
-        LoginPage loginPage = new LoginPage(webDriver);
+    @Test(dataProvider = "invalidDataProvider")
+    public void negativeLeadsToLoginSubmitPage(String userEmail, String userPass, String emailErrorMessage, String passErrorMessage) {
         LoginSubmitPage loginSubmitPage = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(loginSubmitPage.isPageLoaded());
