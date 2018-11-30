@@ -76,19 +76,40 @@ public class LoginTest {
         Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded");
     }
 
-    @Test
-    public void emptyField() {
+
+    @DataProvider
+    public Object[][] emptyDataProvider(){
+        return new Object[][]{
+                {"testvikbielov@gmail.com", ""},
+                {"", "112233qweqwedbrnjh"},
+                {"", ""}
+        };
+    }
+
+    @Test (dataProvider = "emptyDataProvider")
+    public void emptyField( String userEmail, String userPass ) {
         LoginPage loginPage = new LoginPage(webDriver);
-        LoginPage loginPage1 = loginPage.login("", "");
+        LoginPage loginPage1 = loginPage.login(userEmail, userPass);
 
         Assert.assertTrue(loginPage1.isPageLoaded(), "Login page is not loaded.");
     }
 
-    @Test
-    public void negativeLeadsToLoginSubmitPage(){
-        LoginPage loginPage = new LoginPage(webDriver);
-        LoginSubmitPage loginSubmitPage = loginPage.login("testvikbielov@@gmail.com", "112233qweqwedbrnjh");
+    @DataProvider
+    public Object[][] invalidDataProvider() {
+        return new Object[][]{
+                {"testvikbielov@@gmail.com", "112233qweqwedbrnjh", "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.", ""},                       //wrong email
+                {"testvikbielov@gmail.com", "pa$$word", "", "Это неверный пароль. Повторите попытку или измените пароль."},                                             //wrong password
+                {"testvikbielov@gmailcom", "112233qweqwedbrnjh", "Этот адрес эл. почты не зарегистрирован в LinkedIn.\nВозможно, вы имели в виду @gmail.com?", ""},     //email without dot
+        };
+    }
 
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
+    @Test (dataProvider = "invalidDataProvider")
+    public void negativeLeadsToLoginSubmitPage( String userEmail, String userPass, String emailErrorMessage, String passErrorMessage ){
+        LoginPage loginPage = new LoginPage(webDriver);
+        LoginSubmitPage loginSubmitPage = loginPage.login(userEmail, userPass);
+
+        Assert.assertTrue(loginSubmitPage.isPageLoaded());
+        Assert.assertEquals(loginSubmitPage.getUserEmailErrorMessage(), emailErrorMessage, "Wrong email error message");
+        Assert.assertEquals(loginSubmitPage.getUserPassError(), passErrorMessage, "Wrong password error message");
     }
 }

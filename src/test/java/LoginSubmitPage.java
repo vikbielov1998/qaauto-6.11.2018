@@ -22,8 +22,18 @@ class LoginSubmitPage extends BasePage{
         PageFactory.initElements(webDriver, this);
     }
 
+    public String getUserEmailErrorMessage() {
+        return userEmailError.getText();
+    }
+
+    public String getUserPassError(){
+        return userPassError.getText();
+    }
+
     boolean isPageLoaded(){
 
-        return loginForm.isDisplayed() && signInButton.isDisplayed() && (userEmailError.isDisplayed() || userPassError.isDisplayed()) && webDriver.getCurrentUrl().contains("uas/login-submit");
+        return loginForm.isDisplayed()
+                && signInButton.isDisplayed()
+                && webDriver.getCurrentUrl().contains("uas/login-submit");
     }
 }
