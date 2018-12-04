@@ -27,7 +27,7 @@ class HomePage extends BasePage{
     public SearchResultsPage searchField(String searchTerm) {
         searchField.sendKeys(searchTerm, Keys.ENTER);
         try {
-            sleep(3000);
+            sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

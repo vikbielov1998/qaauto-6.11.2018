@@ -1,4 +1,5 @@
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -48,5 +49,13 @@ public class SearchTest {
         SearchResultsPage searchResultsPage = homePage.searchField(searchTerm);
 
         Assert.assertTrue(searchResultsPage.isPageLoaded(), "Search results page is not loaded.");
+
+        //Assert.assertEquals(searchResultsPage.getSize(), 7, "Amount of result element does not equal to 10");
+
+       Assert.assertTrue(searchResultsPage.getResult(searchTerm), "Not all results contains searchTerm!");
+
+        /*for (WebElement result : searchResultsPage.getResult()){
+            Assert.assertTrue(result.getText().toLowerCase().contains(searchTerm), "Some result doesn't contain searchTerm");
+        }*/
     }
 }
