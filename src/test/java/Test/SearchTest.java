@@ -1,28 +1,13 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+package Test;
+
+import Page.HomePage;
+import Page.SearchResultsPage;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class SearchTest {
-    private WebDriver webDriver;
+import java.util.List;
 
-    private HomePage homePage;
-
-    @BeforeMethod
-    public void beforeMethod() {
-        webDriver = new ChromeDriver();
-        webDriver.get("https://www.linkedin.com");
-        LoginPage loginPage = new LoginPage(webDriver);
-        homePage = loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
-    }
-
-    @AfterMethod //(alwaysRun = true)
-    public void afterMethod() {
-        webDriver.quit();
-    }
+public class SearchTest extends BaseTest {
 
     /**
      * Precondition:
@@ -43,6 +28,8 @@ public class SearchTest {
 
     @Test
     public void basicSearchTest(){
+        HomePage homePage = loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
+
         Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded");
 
         String searchTerm = "hr";
@@ -50,12 +37,18 @@ public class SearchTest {
 
         Assert.assertTrue(searchResultsPage.isPageLoaded(), "Search results page is not loaded.");
 
-        //Assert.assertEquals(searchResultsPage.getSize(), 7, "Amount of result element does not equal to 10");
+        Assert.assertEquals(searchResultsPage.getSize(), 10, "Amount of result element does not equal to 10");
 
-       Assert.assertTrue(searchResultsPage.getResult(searchTerm), "Not all results contains searchTerm!");
+       //Assert.assertTrue(searchResultsPage.isResult(searchTerm), "Not all results contains searchTerm!");
 
         /*for (WebElement result : searchResultsPage.getResult()){
             Assert.assertTrue(result.getText().toLowerCase().contains(searchTerm), "Some result doesn't contain searchTerm");
         }*/
+
+        List<String> searchResultsList = searchResultsPage.getSearchResults();
+
+        for (String searchResult : searchResultsList){
+            Assert.assertTrue(searchResult.toLowerCase().contains(searchTerm.toLowerCase()), "SearchTerm " + searchTerm + " not found in:\n" + searchResult);
+        }
     }
 }

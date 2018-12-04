@@ -1,3 +1,5 @@
+package Page;
+
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -6,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import static java.lang.Thread.sleep;
 
-class HomePage extends BasePage{
+public class HomePage extends BasePage{
 
     @FindBy (xpath = "//a[@data-control-name='identity_welcome_message']")
     private WebElement welcomeMessage;
@@ -19,7 +21,7 @@ class HomePage extends BasePage{
         PageFactory.initElements(webDriver, this);
     }
 
-    boolean isPageLoaded(){
+    public boolean isPageLoaded(){
 
         return webDriver.getTitle().contains("LinkedIn") && welcomeMessage.isDisplayed();
     }

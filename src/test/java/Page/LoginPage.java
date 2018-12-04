@@ -1,10 +1,12 @@
+package Page;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 
-class LoginPage extends BasePage {
+public class LoginPage extends BasePage {
 
     @FindBy(xpath = "//*[@id='login-email']")
     private WebElement emailField;
@@ -15,7 +17,7 @@ class LoginPage extends BasePage {
     @FindBy(xpath = "//*[@id='login-submit']")
     private WebElement signInButton;
 
-    LoginPage(WebDriver webDriver) {
+    public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
@@ -41,19 +43,19 @@ class LoginPage extends BasePage {
         return PageFactory.initElements(webDriver, expectedPage);
     }
 
-    HomePage homePage(String userEmail, String userPassword) {
-        return login(userEmail, userPassword, HomePage.class);
+    Page.HomePage homePage(String userEmail, String userPassword) {
+        return login(userEmail, userPassword, Page.HomePage.class);
     }
 
-    LoginSubmitPage loginToLoginSubmit(String userEmail, String userPassword) {
-        return login(userEmail, userPassword, LoginSubmitPage.class);
+    Page.LoginSubmitPage loginToLoginSubmit(String userEmail, String userPassword) {
+        return login(userEmail, userPassword, Page.LoginSubmitPage.class);
     }
 
-    LoginPage loginPage(String userEmail, String userPassword) {
-        return login(userEmail, userPassword, LoginPage.class);
+    Page.LoginPage loginPage(String userEmail, String userPassword) {
+        return login(userEmail, userPassword, Page.LoginPage.class);
     }*/
 
-    boolean isPageLoaded() {
+    public boolean isPageLoaded() {
 
         return signInButton.isDisplayed() && webDriver.getTitle().equals("LinkedIn: Войти или зарегистрироваться") && webDriver.getCurrentUrl().equals("https://www.linkedin.com/");
     }

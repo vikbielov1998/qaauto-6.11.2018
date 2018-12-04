@@ -1,3 +1,5 @@
+package Page;
+
 import org.openqa.selenium.WebDriver;
 
 abstract class  BasePage {
