@@ -19,6 +19,9 @@ public class LoginSubmitPage extends BasePage{
     @FindBy (xpath = "//button[@class='btn__primary--large from__button--floating']")
     private WebElement signInButton;
 
+    @FindBy (xpath = "//a[@class='btn__tertiary--medium action__btn']")
+    private WebElement forgotPasswordLink;
+
     LoginSubmitPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
@@ -30,6 +33,11 @@ public class LoginSubmitPage extends BasePage{
 
     public String getUserPassError(){
         return userPassError.getText();
+    }
+
+    public ResetPasswordPage clickForgotPasswordLink() {
+        forgotPasswordLink.click();
+        return new ResetPasswordPage(webDriver);
     }
 
     public boolean isPageLoaded(){

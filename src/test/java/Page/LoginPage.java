@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 
+/** PageObject class for LoginPage.
+ */
 public class LoginPage extends BasePage {
 
     @FindBy(xpath = "//*[@id='login-email']")
@@ -17,6 +19,12 @@ public class LoginPage extends BasePage {
     @FindBy(xpath = "//*[@id='login-submit']")
     private WebElement signInButton;
 
+    @FindBy (xpath = "//a[@class='link-forgot-password']")
+    private WebElement forgotPasswordLink;
+
+    /** Constructor of LoginPage class.
+     * @param webDriver - webDriver instance from Test.
+     */
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
@@ -36,27 +44,19 @@ public class LoginPage extends BasePage {
 
     }
 
-   /* private   <T> T login(String userEmail, String userPassword, Class<T> expectedPage) {
-        emailField.sendKeys(userEmail);
-        passwordField.sendKeys(userPassword);
-        signInButton.click();
-        return PageFactory.initElements(webDriver, expectedPage);
-    }
-
-    Page.HomePage homePage(String userEmail, String userPassword) {
-        return login(userEmail, userPassword, Page.HomePage.class);
-    }
-
-    Page.LoginSubmitPage loginToLoginSubmit(String userEmail, String userPassword) {
-        return login(userEmail, userPassword, Page.LoginSubmitPage.class);
-    }
-
-    Page.LoginPage loginPage(String userEmail, String userPassword) {
-        return login(userEmail, userPassword, Page.LoginPage.class);
-    }*/
-
+    /** Method to check if page is loaded.
+     * @return true/false (true expected).
+     */
     public boolean isPageLoaded() {
 
         return signInButton.isDisplayed() && webDriver.getTitle().equals("LinkedIn: Войти или зарегистрироваться") && webDriver.getCurrentUrl().equals("https://www.linkedin.com/");
+    }
+
+    /** Method to click on 'forgot password' link.
+     * @return new object of RequestPasswordResetPage class.
+     */
+    public RequestPasswordResetPage clickForgotPasswordLink() {
+        forgotPasswordLink.click();
+        return new RequestPasswordResetPage(webDriver);
     }
 }

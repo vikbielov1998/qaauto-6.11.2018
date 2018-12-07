@@ -39,16 +39,10 @@ public class SearchTest extends BaseTest {
 
         Assert.assertEquals(searchResultsPage.getSize(), 10, "Amount of result element does not equal to 10");
 
-       //Assert.assertTrue(searchResultsPage.isResult(searchTerm), "Not all results contains searchTerm!");
-
-        /*for (WebElement result : searchResultsPage.getResult()){
-            Assert.assertTrue(result.getText().toLowerCase().contains(searchTerm), "Some result doesn't contain searchTerm");
-        }*/
-
         List<String> searchResultsList = searchResultsPage.getSearchResults();
 
         for (String searchResult : searchResultsList){
-            Assert.assertTrue(searchResult.toLowerCase().contains(searchTerm.toLowerCase()), "SearchTerm " + searchTerm + " not found in:\n" + searchResult);
+            Assert.assertTrue(searchResult.toLowerCase().contains(searchTerm), "SearchTerm " + searchTerm + " not found in:\n" + searchResult);
         }
     }
 }

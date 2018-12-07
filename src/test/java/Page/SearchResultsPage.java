@@ -30,18 +30,6 @@ public class SearchResultsPage extends BasePage{
         return resultList.size();
     }
 
-   /*List<WebElement> getResult(){
-       return resultList;
-    }*/
-
-    boolean isResult(String searchTerm)
-    {
-        for (WebElement result : resultList){
-            if (!result.getText().toLowerCase().contains(searchTerm)) return false;
-        }
-        return true;
-    }
-
     public List<String> getSearchResults() {
         List<String> searchResultsList = new ArrayList<String>();
         for (WebElement searchResult : resultList){

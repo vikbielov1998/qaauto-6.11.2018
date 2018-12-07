@@ -16,7 +16,7 @@ public class HomePage extends BasePage{
     @FindBy (xpath = "//div[@class='nav-search-typeahead']//input")
     private WebElement searchField;
 
-    HomePage(WebDriver webDriver) {
+    public HomePage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
