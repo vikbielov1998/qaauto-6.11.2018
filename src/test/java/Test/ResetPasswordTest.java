@@ -4,6 +4,9 @@ import Page.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+/**Class for successful password reset test
+ *
+ */
 public class ResetPasswordTest extends BaseTest {
 
     /**
@@ -26,6 +29,9 @@ public class ResetPasswordTest extends BaseTest {
      * - Go to home page.
      */
 
+    /**Test for successful password reset
+     *
+     */
     @Test
     public void resetPasswordTest (){
         LoginSubmitPage loginSubmitPage = loginPage.login("testvikbielov@gmail.com", "wrongpass");

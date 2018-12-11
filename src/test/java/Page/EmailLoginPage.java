@@ -8,6 +8,9 @@ import org.openqa.selenium.support.PageFactory;
 
 import static java.lang.Thread.sleep;
 
+/**Class for email login page
+ *
+ */
 public class EmailLoginPage {
     private WebDriver webDriver;
 
@@ -17,14 +20,25 @@ public class EmailLoginPage {
     @FindBy (xpath = "//input[@name='password']")
     private WebElement passwordField;
 
+    /**
+     * Link (image) to go to email box from google page
+     */
     @FindBy (xpath = "//a[@class='WaidBe']")
     private WebElement emailLink;
 
+    /**Constructor for EmailLoginPage class
+     * @param webDriver webDriver instance from ResetPasswordPage
+     */
     public EmailLoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
 
+    /**Method to login to google account and go to email
+     * @param userMail user login email fo Google account (valid)
+     * @param userPass user login password to Google account (valid)
+     * @return return class EmailBoxPage
+     */
     public EmailBoxPage login(String userMail, String userPass) {
         emailField.sendKeys(userMail, Keys.ENTER);
         try {

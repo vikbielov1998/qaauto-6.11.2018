@@ -7,17 +7,24 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+/**Test class for login test
+ *
+ */
 public class LoginTest extends BaseTest{
 
     @DataProvider
     public Object[][] validDataProvider() {
         return new Object[][]{
-                {"testvikbielov@gmail.com", "112233qweqwedbrnjh"},
-                {"testvikbielov@GMAIL.COM", "112233qweqwedbrnjh"},
-                {" testvikbielov@gmail.com ", "112233qweqwedbrnjh"}
+                {"testvikbielov@gmail.com", "newpa$$word"},
+                {"testvikbielov@GMAIL.COM", "newpa$$word"},
+                {" testvikbielov@gmail.com ", "newpa$$word"}
         };
     }
 
+    /**Test for login with valid data
+     * @param userEmail valid user email
+     * @param userPass valid user password
+     */
     @Test(dataProvider = "validDataProvider")
     public void positiveLoginTest(String userEmail, String userPass) {
         HomePage homePage = loginPage.login(userEmail, userPass);
@@ -35,6 +42,10 @@ public class LoginTest extends BaseTest{
         };
     }
 
+    /**Test for login without entering some/both field/s
+     * @param userEmail user email
+     * @param userPass user email
+     */
     @Test(dataProvider = "emptyDataProvider")
     public void emptyField(String userEmail, String userPass) {
         LoginPage loginPage1 = loginPage.login(userEmail, userPass);
@@ -51,6 +62,12 @@ public class LoginTest extends BaseTest{
         };
     }
 
+    /**Test for login with invalid data
+     * @param userEmail user email
+     * @param userPass user password
+     * @param emailErrorMessage error message for email
+     * @param passErrorMessage error message for password
+     */
     @Test(dataProvider = "invalidDataProvider")
     public void negativeLeadsToLoginSubmitPage(String userEmail, String userPass, String emailErrorMessage, String passErrorMessage) {
         LoginSubmitPage loginSubmitPage = loginPage.login(userEmail, userPass);

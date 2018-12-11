@@ -1,5 +1,6 @@
 package Page;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,7 +22,16 @@ public class SetNewPasswordPage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
+    /**Method to set and confirm new password
+     * @return return Home page
+     */
+    public HomePage enterNewPassword() {
+        newPasswordField.sendKeys("pa$$word");
+        confirmPasswordField.sendKeys("pa$$word", Keys.ENTER);
+        resetPassButton.click();
+        return new HomePage(webDriver);
+    }
     public boolean isPageLoaded() {
-        return newPasswordField.isDisplayed() && webDriver.getTitle().contains("Reset tour password");
+        return newPasswordField.isDisplayed() && webDriver.getTitle().contains("Reset your password");
     }
 }

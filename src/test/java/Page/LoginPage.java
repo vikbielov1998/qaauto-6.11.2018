@@ -30,6 +30,12 @@ public class LoginPage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
+    /**Method to return class depends on what page will load
+     * @param userEmail - user login email
+     * @param userPassword - user login password (valid or invalid)
+     * @param <T> - generic type of returned PageObject
+     * @return returns HomePage / LoginSubmitPage / LoginPage class
+     */
     public <T> T login(String userEmail, String userPassword) {
         emailField.sendKeys(userEmail);
         passwordField.sendKeys(userPassword);
@@ -41,7 +47,6 @@ public class LoginPage extends BasePage {
         } else {
             return (T) new LoginPage(webDriver);
         }
-
     }
 
     /** Method to check if page is loaded.

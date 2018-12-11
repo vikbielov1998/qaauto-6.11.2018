@@ -7,6 +7,9 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+/**Class for search test
+ *
+ */
 public class SearchTest extends BaseTest {
 
     /**
@@ -28,7 +31,7 @@ public class SearchTest extends BaseTest {
 
     @Test
     public void basicSearchTest(){
-        HomePage homePage = loginPage.login("testvikbielov@gmail.com", "112233qweqwedbrnjh");
+        HomePage homePage = loginPage.login("testvikbielov@gmail.com", "newpa$$word");
 
         Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded");
 
